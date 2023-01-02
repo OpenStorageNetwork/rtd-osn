@@ -21,7 +21,7 @@ A completed template example is shown below.
 .. figure:: images/osn-landing-example.png
   :width: 600
   :align: center
-  :alt: Sample landing page
+  :alt: Template Example
 
-  Sample landing page
+  Template Example
 
