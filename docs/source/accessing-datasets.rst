@@ -150,12 +150,12 @@ This file may be found by typing the command "rclone config file".
 The command will return the path to the rclone config file. 
 Open this file with a text editor and add the following stanza to the end of the file: ::
 
-	1[<alias>]
-	2type = s3
-	3provider = Ceph
-	4access_key_id = <access key>
-	5secret_access_key =<secret key>
-	6endpoint = <location> 
+	[<alias>]
+	type = s3
+	provider = Ceph
+	access_key_id = <access key>
+	secret_access_key =<secret key>
+	endpoint = <location> 
 
 Where:
 * <alias> – nickname of your choice for the allocation
@@ -164,12 +164,13 @@ Where:
 * <location> – the location information provided by the data manager or portal
 
 An example of a configuration stanza might look like: ::
-	1[ocean-data]
-	2type = s3
-	3provider = Ceph
-	4access_key_id = ASasd8KJHDAKH**&asd
-	5secret_access_key =asd(*&Adskj*(*(&868778
-	6endpoint = https://mghp.osn.xsede.org
+
+	[ocean-data]
+	type = s3
+	provider = Ceph
+	access_key_id = ASasd8KJHDAKH**&asd
+	secret_access_key =asd(*&Adskj*(*(&868778
+	endpoint = https://mghp.osn.xsede.org
 
 
 Rclone Configuration
