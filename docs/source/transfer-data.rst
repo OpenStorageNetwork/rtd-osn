@@ -1,7 +1,7 @@
 Transfer Data to the OSN
 ============================
 
-OSN data sets are comprised of `Ceph Objects <https://docs.ceph.com/en/latest/start/intro/>` accessible from anywhere,
+OSN data sets are comprised of `Ceph Objects <https://docs.ceph.com/en/latest/start/intro/>`_ accessible from anywhere,
 via a RESTful protocol that follows S3 conventions.
 All end user access is via S3 put and get requests,
 mediated by `Bucket Policies <https://docs.ceph.com/docs/master/radosgw/bucketpolicy/>`_.
