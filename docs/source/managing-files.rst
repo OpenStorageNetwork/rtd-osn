@@ -1,6 +1,7 @@
 Managing Files and Data
 =======================
 There are four roles associated with an OSN allocation:
+
 * Principal Investigator - Responsible for the allocation and serves as either the Data Manager or the Alternate Data Manager for the allocation.
 * Data Manager:
 
