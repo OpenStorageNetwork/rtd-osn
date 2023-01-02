@@ -145,6 +145,13 @@ The tool supports multiple upload/download streams, chunking, pausing and restar
 
 Rclone
 ^^^^^^^
+Rclone is an open source command line utility that functions similarly to rsync and is able to 
+communicate with numerous cloud-based storage providers. 
+The application and documentation may be found at Rclone. 
+Download and install the application per the instructions on the `RCLONE website<https://rclone.org>`_.
+
+Rclone Configuration
+""""""""""""""""""""
 The most straightforward way to configure Rclone for OSN is to edit the rclone configuration file.
 This file may be found by typing the command "rclone config file". 
 The command will return the path to the rclone config file. 
@@ -173,11 +180,25 @@ An example of a configuration stanza might look like: ::
 	endpoint = https://mghp.osn.xsede.org
 
 
-Rclone Configuration
-""""""""""""""""""""
-
 Rclone Commands
 """""""""""""""
+Rclone commands are of the form: ::
+
+	$ rclone command alias:/bucket
+
+
+So, using the example config file entry described above and assuming a bucket named "phytoplankton",
+ one would list the content of the bucket using the following command: ::
+
+	$ rclone ls ocean-data:/phytoplankton
+
+You could copy a local file to the bucket with the command: ::
+
+	$ rclone cp my-local-file.dat ocean-data:/phytoplankton
+
+Rclone offers a wide range of commands for performing typical unix file operations (ls, cp, rm, rsync, etc.). 
+Details on these commands can be found on the `RCLONE documentation page<https://rclone.org/docs/>`_.
+
 
 Third Party Data Management
 ---------------------------
