@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'OSN'
-copyright = '2022, MGHPCC'
-author = 'csim'
+project = 'Lumache'
+copyright = '2021, Graziella'
+author = 'Graziella'
 
 release = '0.1'
 version = '0.1.0'
