@@ -13,5 +13,5 @@ Larger allocations can be accommodated with additional review.
 If your project needs more than more than 50 terabytes or more than 1.6 million files,
 please contact the OSN team directly to discuss before you submit your request.
 
-An active research dataset can remain in OSN storage up to five years.
+An active research dataset can remain in OSN storage for up to five years.
 

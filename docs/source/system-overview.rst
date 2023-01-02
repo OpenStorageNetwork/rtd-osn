@@ -67,7 +67,7 @@ that makes it easy to "visit" a data set from a browser, search engine, or data 
 The landing page contains metadata that describes the data set, along with the links
 to preconfigured, downloadable tools for accessing the data.
 
-An active research data set can remain in OSN storage up to five years and usage
+An active research data set can remain in OSN storage for up to five years and usage
 must comply with the OSN Acceptable Use Policy.
 
 
