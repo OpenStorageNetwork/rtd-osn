@@ -148,7 +148,7 @@ Rclone
 Rclone is an open source command line utility that functions similarly to rsync and is able to 
 communicate with numerous cloud-based storage providers. 
 The application and documentation may be found at Rclone. 
-Download and install the application per the instructions on the `RCLONE website<https://rclone.org>`_.
+Download and install the application per the instructions on the `RCLONE website <https://rclone.org>`_.
 
 Rclone Configuration
 """"""""""""""""""""
@@ -196,11 +196,15 @@ You could copy a local file to the bucket with the command: ::
 	$ rclone cp my-local-file.dat ocean-data:/phytoplankton
 
 Rclone offers a wide range of commands for performing typical unix file operations (ls, cp, rm, rsync, etc.). 
-Details on these commands can be found on the `RCLONE documentation page<https://rclone.org/docs/>`_.
+Details on these commands can be found on the `RCLONE documentation page <https://rclone.org/docs/>`_.
 
 
 Third Party Data Management
 ---------------------------
+OSN users may also choose to layer more sophisticated data management applications on top of the S3 API
+services that OSN provides.
+Two applications that have been used with OSN include Globus (using the Globus S3) connector and iRods.
+Both packages have detailed descriptions on how to connect the service with a S3 storage provider.
 
 
 
