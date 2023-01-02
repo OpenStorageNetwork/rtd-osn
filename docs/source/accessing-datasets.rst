@@ -186,9 +186,8 @@ Rclone commands are of the form: ::
 
 	$ rclone command alias:/bucket
 
-
 So, using the example config file entry described above and assuming a bucket named "phytoplankton",
- one would list the content of the bucket using the following command: ::
+one would list the content of the bucket using the following command: ::
 
 	$ rclone ls ocean-data:/phytoplankton
 
