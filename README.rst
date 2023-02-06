@@ -34,6 +34,23 @@ In this example, we will use conda and assume miniconda is installed.
 	$ conda activate rtd
 
 
+Previewing Changes Before Commiting
+-----------------------------------
+
+After you've made local changes to the documentation, please build and view before
+checking in changes or submitting a PR.
+
+* Change paths to the top level of the documentation 
+
+	$ cd /path/to/git/rtd-osn/docs
+
+* Build the documentation
+
+	$ make html
+
+* View the documentation in $PWD/build/docs/index.html
+
+	$ open build/html/index.html  # works on a mac; use xdg-open on linux
 
 
 
