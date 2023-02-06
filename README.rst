@@ -34,6 +34,10 @@ In this example, we will use conda and assume miniconda is installed.
 	$ conda activate rtd
 
 
+**Note:** If you already have a conda environment named "rtd" or prefer a different name, use the -n option
+
+	$ conda env create -n myname -f environment.yml
+
 Previewing Changes Before Commiting
 -----------------------------------
 
