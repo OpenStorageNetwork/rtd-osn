@@ -3,7 +3,7 @@
 # -- Project information
 
 project = 'OSN'
-copyright = '2022, MGHPCC'
+copyright = '2023, MGHPCC'
 author = 'csim'
 
 release = '0.1'
