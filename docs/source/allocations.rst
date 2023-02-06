@@ -53,7 +53,7 @@ Once your project has been awarded ACCESS credits, you will now transfer those c
 
 .. note::
 
-   If you are a Campus Champions please use 1 TB and 1000 ACCESS credits instead.
+   If you are a Campus Champion, please use 1 TB and 1000 ACCESS credits instead.
 
 You will be notified via email when your OSN storage is ready to be used.
 An active research dataset can remain in OSN storage for up to five years.
