@@ -330,6 +330,46 @@ Rclone offers a wide range of commands for performing typical unix file operatio
 Details on these commands can be found on the `RCLONE documentation page <https://rclone.org/docs/>`_.
 
 
+AWS CLI with OSN
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Install the AWS CLI utility:
+
+`Official instructions to
+install <https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html>`__
+the lastest AWS command line interface
+
+After installing the AWS CLI, create a “config” file, ``~/.aws/config``,
+with
+
+::
+
+   [yourprofilename]
+   output=json
+
+and add a corresponding credentials entry in your “credentials” file,
+``~/.aws/credentials``, with
+
+::
+
+   [yourprofilename]
+   aws_secret_access_key = your_secret_key
+   aws_access_key_id = your_access_key
+
+Your profile name is the one listed on the OSN storage page, with
+project ID+name. For example:
+
+::
+
+   XYZ123415_Bob_Smith
+
+After loading your ``aws-cli`` environment, you can use s3 commands such
+as:
+
+::
+
+   aws s3 ls <yourbucket> --profile <yourprofilename> --endpoint <yourendpoint> --recursive --human-readable --summarize
+
 Third Party Data Management
 ---------------------------
 OSN users may also choose to layer more sophisticated data management applications on top of the S3 API
