@@ -89,6 +89,26 @@ checking in changes or submitting a PR.
 Live Preview of Changes
 -----------------------------------
 
+If you'd like to automatically rebuild your local docs and view the changes,
+use the "sphinx-reload" package. 
+
+#. Activate your RTD conda environment
+
+	$ conda activate rtd
+
+#. Install the "sphinx-reload" package via pip
+
+	$ pip install sphinx-reload
+
+#. Navigate to the top level of your rtd-osn git repo checkout and start the server
+
+	$ cd /path/to/git/rtd-osn
+
+	$ sphinx-reload docs/
+
+This will spawn a webserver on port 5500 and should open your default web browser and
+navigate to this site. As changes are made to any .rst file under the docs directory,
+the website will automatically be rebuilt and refreshed.
 
 
 
