@@ -26,7 +26,8 @@ In this example, we will use conda and assume miniconda is installed.
 #. Use the conda-generated environment.yml file to create your environment
 
 	$ cd rtd-osn
-        $ conda env create -f environment.yml
+        
+	$ conda env create -f environment.yml
 
 #. Whenever you need to build RTD-hosted documentation, first load the rtd environment
 
