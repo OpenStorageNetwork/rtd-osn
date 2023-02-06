@@ -5,6 +5,7 @@ This GitHub repo contains the sources for the Read the Docs hosted
 OSN documentation website.
 
 Resources:
+----------
 * `Read the Docs website <https://readthedocs.org>`_
 * `OSN documentation website <https://openstoragenetwork.readthedocs.io/>`_
 * `Docutil's authoritative reStructuredText reference <https://docutils.sourceforge.io/rst.html>`_
