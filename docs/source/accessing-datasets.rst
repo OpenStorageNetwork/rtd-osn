@@ -94,8 +94,8 @@ Using Cyberduck with OSN is straightforward.
 When specifying the server, use the hostname portion of the location 
 (i.e. if the location is https://mghp.osn.xsede.org the hostname is "mghp.osn.xsede.org").
 
-When specifying "Port", use 443 if the location starts with "https://";
-use 80 if the location starts with "http://".
+When specifying "Port", use 443 if the location starts with "https";
+use 80 if the location starts with "http".
 
 .. figure:: images/osn-cyberdemo.png
   :width: 600
