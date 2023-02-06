@@ -2,7 +2,7 @@ OpenStorageNetwork (OSN) Documentation Repository
 =================================================
 
 This GitHub repo contains the sources for the Read the Docs hosted
-OSN documentation website.
+`OSN documentation website <https://openstoragenetwork.readthedocs.io/>`_
 
 Resources:
 ----------
