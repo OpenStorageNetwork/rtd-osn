@@ -8,15 +8,15 @@ and "Bucket" when referring to inward-facing operations such as Bucket creation.
 
 OSN storage is allocated from the resources at the location(s) closest to the requestor
 with capacity to fulfill the request. Allocations of a minimum 10 terabytes and max of
-300 terabytes supporting up to 1.6 million files can be requested through the 
+50 terabytes supporting up to 1.6 million files can be requested through the 
 `ACCESS CI <https://access-ci.org>`_ allocation process. 
-If you require more than 300 TB of OSN storage, please contact us to discuss the
+If you require more than 50 TB of OSN storage, please contact us to discuss the
 hosting and purchase of your own OSN pod.
 
 ACCESS credits may be redeemed for OSN storage at a rate of 1 ACCESS credit = 1 GB of
 OSN storage. To get started, make a request for 10 TB (and at least 10,000 credits). 
 After you demonstrate a commitment to using OSN and start to consume your storage 
-allocation, supplemental storage requests may be made up to a maximum of 300 TB. 
+allocation, supplemental storage requests may be made up to a maximum of 50 TB. 
 
 .. note::
 
