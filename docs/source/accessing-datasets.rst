@@ -370,6 +370,8 @@ as:
 
    aws s3 ls <yourbucket> --profile <yourprofilename> --endpoint <yourendpoint> --recursive --human-readable --summarize
 
+Recall that if a bucket url is https://mghp.osn.xsede.org/phytoplankton, then <yourbucket> is phytoplankton, and <yourendpoint> is https://mghp.osn.xsede.org.
+
 Third Party Data Management
 ---------------------------
 OSN users may also choose to layer more sophisticated data management applications on top of the S3 API
