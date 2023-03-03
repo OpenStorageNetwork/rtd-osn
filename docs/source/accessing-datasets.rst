@@ -294,6 +294,7 @@ Open this file with a text editor and add the following stanza to the end of the
 	access_key_id = <access key>
 	secret_access_key =<secret key>
 	endpoint = <location> 
+	no_check_bucket = true
 
 Where:
 * <alias> – nickname of your choice for the allocation
@@ -309,6 +310,7 @@ An example of a configuration stanza might look like: ::
 	access_key_id = ASasd8KJHDAKH**&asd
 	secret_access_key =asd(*&Adskj*(*(&868778
 	endpoint = https://mghp.osn.xsede.org
+	no_check_bucket = true
 
 
 Rclone Commands
@@ -324,7 +326,7 @@ one would list the content of the bucket using the following command: ::
 
 You could copy a local file to the bucket with the command: ::
 
-	$ rclone cp my-local-file.dat ocean-data:/phytoplankton
+	$ rclone copy my-local-file.dat ocean-data:/phytoplankton
 
 Rclone offers a wide range of commands for performing typical unix file operations (ls, cp, rm, rsync, etc.). 
 Details on these commands can be found on the `RCLONE documentation page <https://rclone.org/docs/>`_.
