@@ -33,5 +33,6 @@ Contents
    data-sets
    managing-files
    transfer-data
+   tutorials
    help 
 
