@@ -14,6 +14,12 @@ help:
 
 .PHONY: help Makefile
 
+pub-gen2: gen2
+	tar -cv -O -C "$(BUILDDIR)-gen2/html/" . | ssh osnportal 'docker cp - storageportal_proxy:/usr/local/apache2/htdocs/static/minipod'
+
+gen2: Makefile
+	@$(SPHINXBUILD) -M html "$(SOURCEDIR)-gen2" "$(BUILDDIR)-gen2" $(SPHINXOPTS) $(O)
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
