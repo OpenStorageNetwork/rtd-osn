@@ -1,16 +1,16 @@
-Minipod Overview
+Gen2 Pod Overview
 ================
 
-The MINIPOD is the Open Storage Network's second-generation pod architecture
-it provides similar storage capacity to the V1 rack appliance in a 7U 
-footprint. The minipod is less complex to order, install, cable and manage
-compared to the V1 appliance trading some component redundancy for 
+The Gen2 Pod is the Open Storage Network's second-generation pod architecture
+it provides similar storage capacity to the Gen1 rack appliance in a 7U 
+footprint. The new pod is less complex to order, install, cable and manage
+compared to the Gen1 appliance trading some component redundancy for 
 a more compact hardware architecture. 
 
 General Configuration
 ---------------------
 
-The minipod consists of three identical servers and a 106 drive JBOD. 
+The Gen2 Pod consists of three identical servers and a 106 drive JBOD. 
 
 Data availability is supported via N+1 (i.e. 2+1) redundant server infrastructure.
 If any server fails, operators can reconfigure the remaining two systems to take 
@@ -22,38 +22,32 @@ of three drives simultaneously without suffering data corruption.
 Data confidentiality is supported via encryption at rest; all storage volumes are encrypted.
 
 
-Comparison to V1
+Comparison to Gen1
 ----------------
 
-The V1 architecture consists of 8 servers; 3 monitor machines and 5 storage machines. Unlike the minipod
-where servers are interchangeable, V1 servers are split into data servers (36 drives each) and monitors.
+The Gen1 architecture consists of 8 servers; 3 monitor machines and 5 storage machines. Unlike the new architecture
+where servers are interchangeable, Gen1 servers are split into data servers (36 drives each) and monitors.
 
 Data availability is supported by N+1 redundancy of each server type; i.e. you can lose 
 one dat server and/or one monitor server and continue to operate. 
 
-Data integrity is supported in the V1 pod via 3:1 erasure coding. Only one disk may be lost
+Data integrity is supported in the Gen1 pod via 3:1 erasure coding. Only one disk may be lost
 without data corruption. This coding ratio is maintained to support host failure domain protection
 i.e. protection against loss of all the data associated with disks connected to a dat host.
 
-Data Confidentiality on the V1 pod is supported in the same manner as it is on the Minipod. 
+Both designs represent tradeoffs. Gen1 pods will self-heal if a host fails providing better availability
+than the Gen2 pod which requires operator intervention. Gen2 pods, however, can guarantee data integrity with
+up to three disk failures whereas the Gen1 pod can only tolerate a single disk failure.
 
-Both designs represent tradeoffs. The Gen2 pod does not offer
-host failure immunity. If a host fails the minipod cannot automatically heal; operators need to 
-reconfigure the array to resume operation . The V1 pod can heal 
-in the event of a host failure but it cannot guarantee that multiple disk failures can happen
-without data corruption.
+The Gen2 tradeoff (self healing for better data integrity) was made based on the observation that servers 
+don't frequently fail completely; they usually suffer degrading component failures and, that most failures do
+not typically destroy the data on connected disks. 
 
-The minipod tradeoff relies on the observation that servers don't frequently fail and, when they
-do, they do not typically destroy the data on connected disks. 
 
-The V1 pod tradeoff relies on the fact that the multiple failures have to happen close enough together
-that the first failure has not been healed and that the second failure has to happen in the same
-placement group(s) as the first.
-
-Minipod Hardware
+Gen2 Hardware
 ----------------
 
-A minipod is built from the following components
+A Gen2 Pod is built from the following components
 
 .. list-table::
   :header-rows: 1
@@ -162,14 +156,14 @@ infrastructure.
 
 Design Synopsis
 ---------------
-The pod runs Ceph, Quincy release on top of Rocky Linux 8. Cephadm is used to bootstrap
+The pod runs Ceph, Quincy release on top of Rocky Linux 8.8. Cephadm is used to bootstrap
 and provision the cluster. Storage controller 0 (storcon0) is used as the bootstrap node.
 Storage controllers 0 and 1 are directly connected to the JBOD and act as OSD hosts. The
 JBOD is zoned into a "split chassis shared nothing" configuration; each storage controller
 sees a JBOD of 53 disks (half of the 106 disk array). The third server, mon0, is not connected
 to the JBOD. All three servers run the the manager, monitor and rados gateway services.
 External access is mediated by the ingress service which runs on storcon0 and mon0
-(these are the machines with external access). Load is spread across the three servers
+(these are the machines with high-speed external access). Load is spread across the three servers
 by the ingress service via HAProxy. The ingress provides HA IP via keepalived/vrrp.
 
 .. figure:: images/MinipodNetworking-Current.png
@@ -177,29 +171,29 @@ by the ingress service via HAProxy. The ingress provides HA IP via keepalived/vr
   :align: center
   :alt: Minipod System Diagram
 
-  Minipod System Diagram
+  Gen2 System Diagram
 
 Networking
 ----------
-The Minipod has four networks which provide external access (to RGW services), out-of-band (OOB) administration,
-server management and ceph communications. Note that the minipod does not contain
+The Gen2 Pod has four networks which provide external access (to RGW services), out-of-band (OOB) administration,
+server management and ceph communications. Note that the Gen2 Pod does not contain
 a separate networking switch. Removing switching hardware from the design simplifies
 configuration and Management, removes a point of failure and reduces cost. 
 
 Access Networking
 ^^^^^^^^^^^^^^^^^
-For the access network, he site provider is responsible for providing two (2) 100G L3 handoffs to the minipod 
+For the access network, the site provider is responsible for providing two (2) 100G L3 handoffs to the pod 
 and three (3) publicly routed IP addresses. 
 
 OOB Networking
 ^^^^^^^^^^^^^^
-For out of band access, the site provider is responsible for providing three (3) copper 1G L3 handoffs to the minipod and 
+For out of band access, the site provider is responsible for providing three (3) copper 1G L3 handoffs and 
 three (3) publicly routed IP address (preferably) on separate physical infrastructure from the 
-access network. 
+Access Network. 
 
 Server Management
 ^^^^^^^^^^^^^^^^^
-The server management network is internal to the minipod and provides access to the
+The server management network is internal to the pod and provides access to the
 BMC cards. Each server acts as a "jump host" to the BMC of one of its peers:
 
 .. list-table::
@@ -236,10 +230,10 @@ Each server is connected to storcon1 via a bonded pair of links (100G active / 2
 Let's Build a Minipod!!
 =======================
 The setup of a new pod consists of a
-hardware installation and initialization step performed locally by the customer and 
+hardware installation and initialization step performed locally by the site administrator and 
 a remote configuration step performed by the OSN team. 
 
-* Customer
+* Site Administrator
 
   * Site Preparation
   * Physical Installation
@@ -247,7 +241,7 @@ a remote configuration step performed by the OSN team.
 * OSN Remote DevOps
 
   * JBOD Configuration
-  * Ansible Playbooks
+  * AWX Playbooks
 
     * Preflight
     * Networking
@@ -258,33 +252,33 @@ a remote configuration step performed by the OSN team.
     * Dashboard functionality
     * Rclone upload test
 
-Customer
---------
-The customer provisioning steps consist 
+Site Administrator
+------------------
+The site admin provisioning steps consist 
 of preparing the site, purchasing and installing hardware and
-installing the base operating system on storcon0, storcon1 and mon0.
-The OSN team provides a disk image that the customer uses to install 
+installing the base operating system on the storcon0, storcon1 and mon0 servers.
+The OSN team provides a disk image that the site administrator uses to install 
 the operating system; this image is customized for each 
-site using information provided by the customer.
+site using information provided to the OSN team by the site administrator.
 
-Customer Preflight
-^^^^^^^^^^^^^^^^^^
-* Order Minipod Hardware
-* Provision Minipod OOB Networking
+Site Administrator Preflight
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Order Hardware
+* Provision Pod OOB Networking
 
   * 3x1G Copper access ports
   * 3x routed public IPs (specify IP address, gateway and netmask)
   * Outbound: http, https
   * Inbound: ssh 
 
-    * Can be source limited to OSN ctl nodes
+    * Can be source limited to OSN controller nodes
   * Verify with test endpoint machine that connections work
-* Provision Minipod Access Networking
+* Provision Pod Access Networking
 
   * 2x100G QSFP28 access ports
 
     * Note that transceivers are specified in the cable kit BOM
-      so all that is required from IT is the provisioning of a 
+      so all that is required from site IT is the provisioning of a 
       QSFP28 switchport
   * 3x routed public IPs
 
@@ -307,19 +301,19 @@ Customer Preflight
   they are cabled per the system diagram and that you provide the 
   correct service tag and IP information for the machines that you choose
 
-Customer Hardware Installation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Hardware Installation
+^^^^^^^^^^^^^^^^^^^^^
 * Install the hardware per the system diagram
 * Make sure to correctly note the system tag information
   for each of the hosts.
 
-Customer Software Initialization
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Software Initialization
+^^^^^^^^^^^^^^^^^^^^^^^
 
 * Download the custom installer ISO generated from the help ticket request
 * Copy the installer iso to a USB3.0 drive 12G or larger
 
-  * sudo dd if=boot.iso of=/dev/sd<??> bs=4M status=progress
+  * sudo dd if=boot.iso of=/dev/sd<??> bs=4M status=progress oflag=direct
 * For each Server
 
   * Connect usb keyboard and mouse
@@ -332,7 +326,7 @@ Customer Software Initialization
   * Boot from boot iso drive
   * Confirm the OS installation
 
-    * The machine should install the Centos 8 Stream Operating 
+    * The machine should install the Rocky 8 Operating 
       system and reboot to a logon prompt.
   * Note that you will need an active internet connection during this process
 
@@ -345,7 +339,7 @@ Customer Software Initialization
 
 OSN DevOps
 ----------
-The customer provisioning steps prepare the servers for remote configuration.
+The site provisioning steps prepare the servers for remote configuration.
 The custom install image initializes networking and sets up the necessary
 administrator accounts, passwords and keys so that OSN DevOPs can remotely
 configure the storage cluster.
@@ -353,20 +347,20 @@ configure the storage cluster.
 Custom Image Creation
 ^^^^^^^^^^^^^^^^^^^^^
 Each pod is built from an installer customized to the pod site. The installer
-is responsible for setting up a baseline CentOS 8 Stream system on each of the three
+is responsible for setting up a baseline Linux system on each of the three
 hosts. The installer configures just enough software and networking 
 to allow OSN DevOPs to access the machines remotely and provision the rest 
 of the storage software.
 
 Overall Design
 """"""""""""""
-The site-specific OSN installer consists of a "stock" CentOS 8 Stream
+The site-specific OSN installer consists of a "stock" Rocky 8
 installer with a custom kickstart that implements the following
 customizations:
 
-  * Intel Driver: The pod requires the most recent Intel NIC driver. That 
-    driver is included in the custom installer and installed during setup.
-
+  * Custom repositories: The installer ships with customized
+    disk monitoring tools.
+  
   * Baseline networking packages: The software installs utilities needed 
     to configure the JBOD and the iDRAC IP addresses.
 
@@ -376,7 +370,7 @@ customizations:
 
   * OOB networking - The installer encodes information provided by the pod site
     (Service Tag and Networking information) to configure the OOB network connection. 
-    The install inspects the serial number of the machine it is installing on and uses
+    The installer inspects the serial number of the machine it is installing on and uses
     that to choose the correct hostname and OOB IP settlings. This customization is unique 
     to each site.
 
@@ -384,95 +378,15 @@ The customized installer image is created using the script "minipodiso.sh"
 
 ISO Builder
 """"""""""""
-In order to run the build script, the DevOps build environment requires the following 
-packages be installed:
+The customized installer is built using a builder container located at
+docker.io/mghpcc/isobuilder. The builder container contains all the source
+materials and scripts needed to build the custom iso file. The container user
+runs the entrypoint script in the builder passing site IP 
+and serial number information and a root user password. The builder container
+then generates the customized iso file. A convenience script, buildiso.sh, is
+used to simplify the process of invoking the builder container with the appropriate
+environment variables and bind mounts set.
 
-  * OS
-
-    * sudo dnf install syslinux genisoimage isomd5sum git
-
-  * Python/ansible
-
-    * cd ~ && git clone https://github.com/OpenStorageNetwork/minipod.git
-    * virtualenvwrapper (convenience for custom build env)
-
-      * sudo pip3 install virtualenvwrapper
-      * edit .bashrc
-      
-          * export VIRTUALENVWRAPPER_PYTHON=python3
-          * export WORKON_HOME=$HOME/.virtualenvs
-          * source /usr/local/bin/virtualenvwrapper.sh
-
-      * source ~/.bashrc
-      * mkvirtualenv -a ~/minipod minipod
-      * pip install netaddr ansible
-      * ansible-galaxy collection install ansible.utils ansible.posix
-
-When run, the build script retrieves the CentOS image, loop mounts it and
-copies the contents to a build directory. The script then creates a customized
-kickstart file (using the same site inventories used to provision CEPH) and copies
-that and the updated Intel drivers to the build directory. When those assets 
-have been collected, the script modifies the bootloader config to use the 
-new installer image and repackages the files into an installer iso.
-
-This iso is then copied (dd or equivalent) to a usb drive which is used by
-site sysadmins to install the initial OS on the hardware.
-
-Intel ICE Driver
-""""""""""""""""
-This driver exhibited issues between two CentOS 8 Stream releases. The 
-issue has to do with RDMA and its interaction with bridges (and bonds?)
-It is likely the issue developed as a result of a kernel update without
-an update to the ice driver (which has a fix for the RDMA issue).
-
-This problem does not appear to be present in the Rocky 8 based
-install. As a precaution, we will include the driver compiled 
-for the Rocky 8 kernel used to build the minipod installer 
-(4.18.0-425.3.1.el8.x86_64) in the event that more testing would have
-uncovered the issue in Rocky as well. Note that this driver
-only works with this specific kernel version and will not work if/when
-Rocky updates are done.
-
-Howto compile ice drivers. Note that the drivers need to be 
-compiled on a system with the same kernel as the target:
-
-  * Drivers are here: https://www.intel.com/content/www/us/en/download/19630/763930/intel-network-adapter-driver-for-e810-series-devices-under-linux.html
-  * Download ice-1.10.1.2.2 release
-  * Install tools and kernel headers
-
-    * rpmbuild
-
-      * sudo dnf install rpm-build-4.14.3-24.el8_7.x86_64
-
-    * Development tools
-
-      * sudo dnf group install "Development Tools"
-
-    * Kernel headers - note you need to match exact kernel version
-
-      * sudo dnf install kernel-devel-$(uname -r)
-
-    * Createrepo
-
-      * sudo dnf install createrepo
-
-  * Build driver rpm
-
-    * you can unpack the driver tar file to get README/details
-    * rpmbuild -tb ice-1.10.1.2.2.tar.gz
-
-  * Create a repo
-
-    * mkdir icerepo
-    * cp ./rpmbuild/RPMS/x86_64/ice-1.10.1.2.2-1.x86_64.rpm icerepo
-    * cd icerepo
-    * createrepo .
-
-Once the repo has been created, you can create a tar file for it
-and update the installer to reference it. The installer will
-copy the repo to the install and make it available as a repo
-in the installed system. It will not install the driver as there
-isn't a known need for it at this point.
 
 DevOPs Preflight
 ^^^^^^^^^^^^^^^^
@@ -486,14 +400,26 @@ DevOPs Preflight
 
       * ens3f0/1 - 100G devices, Intel NIC
       * ens1f0np0, ens1f1np1 - 25G devices, Broadcom NIC
-      * eno1, eno2 - 1G devices - LOM
+      * eno8303, eno8403 - 1G devices - LOM
       * This could get cobbled due to wrong slot placement for the 
         25G and 100G nics or firmware changes (the Broadcom NICS changed
         names between driver updates)
 
-  * Create customized inventory file for the site
+  * Create customized inventory file for the site and add it to AWX
+
+    * Create the inventory file in the gen2-ansible/inventory directory
+    * Commit and push the updated gen2-ansible repo to github
+    * Logon to the AWX server and synchronize the project to fetch the new
+      inventory file.
+    * Create a new inventory for the new site in AWX using the project as the
     
     * This will likely be done during the ticket processing
+
+  * Logon to the OSN AWX server and synchronize the project to fetch the new
+    inventory file.
+
+  * Create a new inventory for the new site in AWX using the project as the 
+  repository source.
 
   * On the ansible controller host run the following playbooks:
   
