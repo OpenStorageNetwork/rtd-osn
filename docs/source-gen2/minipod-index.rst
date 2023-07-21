@@ -1,5 +1,5 @@
 Gen2 Pod Overview
-================
+=================
 
 The Gen2 Pod is the Open Storage Network's second-generation pod architecture
 it provides similar storage capacity to the Gen1 rack appliance in a 7U 
@@ -23,29 +23,29 @@ Data confidentiality is supported via encryption at rest; all storage volumes ar
 
 
 Comparison to Gen1
-----------------
+------------------
 
-The Gen1 architecture consists of 8 servers; 3 monitor machines and 5 storage machines. Unlike the new architecture
-where servers are interchangeable, Gen1 servers are split into data servers (36 drives each) and monitors.
+The Gen1 architecture consists of 8 servers: 3 monitor machines and 5 storage machines. Unlike the new architecture
+where servers are interchangeable, Gen1 servers are split into data servers (36 drives/osds each) and monitors.
 
-Data availability is supported by N+1 redundancy of each server type; i.e. you can lose 
+The Gen1 design implements N+1 redundancy of each server type; i.e. you can lose 
 one dat server and/or one monitor server and continue to operate. 
 
-Data integrity is supported in the Gen1 pod via 3:1 erasure coding. Only one disk may be lost
-without data corruption. This coding ratio is maintained to support host failure domain protection
-i.e. protection against loss of all the data associated with disks connected to a dat host.
+The Gen1 N+1 redundancy requirement implies that the maximum EC code width, N+M, is 4 (5 dat servers - 1 redundant).
+As a result we are limited to 3+1 erasure coding in the Gen1 design; only one disk may be
+lost without data corruption.
 
-Both designs represent tradeoffs. Gen1 pods will self-heal if a host fails providing better availability
+Both designs represent tradeoffs. Gen1 pods will self-heal if a host fails, providing better availability
 than the Gen2 pod which requires operator intervention. Gen2 pods, however, can guarantee data integrity with
 up to three disk failures whereas the Gen1 pod can only tolerate a single disk failure.
 
 The Gen2 tradeoff (self healing for better data integrity) was made based on the observation that servers 
 don't frequently fail completely; they usually suffer degrading component failures and, that most failures do
-not typically destroy the data on connected disks. 
+not destroy all the data on connected disks. 
 
 
 Gen2 Hardware
-----------------
+-------------
 
 A Gen2 Pod is built from the following components
 
@@ -160,11 +160,14 @@ The pod runs Ceph, Quincy release on top of Rocky Linux 8.8. Cephadm is used to 
 and provision the cluster. Storage controller 0 (storcon0) is used as the bootstrap node.
 Storage controllers 0 and 1 are directly connected to the JBOD and act as OSD hosts. The
 JBOD is zoned into a "split chassis shared nothing" configuration; each storage controller
-sees a JBOD of 53 disks (half of the 106 disk array). The third server, mon0, is not connected
+"sees" a JBOD of 53 disks (half of the 106 disk array). The third server, mon0, is not connected
 to the JBOD. All three servers run the the manager, monitor and rados gateway services.
 External access is mediated by the ingress service which runs on storcon0 and mon0
 (these are the machines with high-speed external access). Load is spread across the three servers
-by the ingress service via HAProxy. The ingress provides HA IP via keepalived/vrrp.
+by the ingress service via HAProxy. The ingress provides HA IP via keepalived/vrrp. The 
+RGW HA implemenation is described in the `RGW Service Documentation`_.
+
+.. _RGW Service Documentation: https://docs.ceph.com/en/latest/cephadm/services/rgw/
 
 .. figure:: images/MinipodNetworking-Current.png
   :width: 600
@@ -175,7 +178,7 @@ by the ingress service via HAProxy. The ingress provides HA IP via keepalived/vr
 
 Networking
 ----------
-The Gen2 Pod has four networks which provide external access (to RGW services), out-of-band (OOB) administration,
+The Gen2 Pod uese four networks which provide external access (to RGW services), out-of-band (OOB) administration,
 server management and ceph communications. Note that the Gen2 Pod does not contain
 a separate networking switch. Removing switching hardware from the design simplifies
 configuration and Management, removes a point of failure and reduces cost. 
@@ -220,10 +223,10 @@ CEPH Public Network
 The Ceph "public" network is a specific (unfortunately named) concept in the ceph architecture.
 This network provides communication among the daemons that make up the storage system. You 
 can learn more about ceph networking in the `Ceph Network Configuration Reference`_.
-This is a 100G internal network. This network
-is supported by a bridge on storcon1. Storcon0 and mon0 connect to the bridge on storcon1 where
-storcon1 has virtual interface. Via this bridge, all three servers can communicate with one another. 
-Each server is connected to storcon1 via a bonded pair of links (100G active / 25G standby).
+This is a 100G internal network and is is supported by a bridge on storcon1. Storcon0 
+and mon0 connect to the bridge on storcon1 where storcon1 has virtual interface. 
+Each server is connected to the bridge via a bonded pair of links (100G active / 25G standby).
+Via this bridge, all three servers can communicate with one another at 100G. 
 
 .. _Ceph Network Configuration Reference: https://docs.ceph.com/en/latest/rados/configuration/network-config-ref/
 
@@ -247,6 +250,7 @@ a remote configuration step performed by the OSN team.
     * Networking
     * Bootstrap
     * RGW
+    * Keys
   * Validation
 
     * Dashboard functionality
@@ -268,11 +272,15 @@ Site Administrator Preflight
 
   * 3x1G Copper access ports
   * 3x routed public IPs (specify IP address, gateway and netmask)
-  * Outbound: http, https
-  * Inbound: ssh 
+  * Outbound rules: http, https
+  * Inbound rules: ssh 
 
     * Can be source limited to OSN controller nodes
-  * Verify with test endpoint machine that connections work
+      
+      * ctl01.osn.mghpcc.org - 192.69.102.38
+      * ctl02.osn.mghpcc.org - 192.69.102.51
+      * ctl03.osn.mghpcc.org - 192.69.102.54
+  * Verify using a test endpoint machine that connections work
 * Provision Pod Access Networking
 
   * 2x100G QSFP28 access ports
@@ -283,10 +291,10 @@ Site Administrator Preflight
   * 3x routed public IPs
 
     * One for each ingress host and a third for the VIP
-  * Outbound: http, https
-  * Inbound: http, https
+  * Outbound rules: http, https
+  * Inbound rules: http, https
   * Verify with test endpoint machine that connections work
-* Submit Ticket for Custom Boot ISO (help@mghpcc.org)
+* Submit Ticket for Custom Boot ISO (help@osn.mghpcc.org)
 
   * For each machine provide
 
@@ -316,8 +324,7 @@ Software Initialization
   * sudo dd if=boot.iso of=/dev/sd<??> bs=4M status=progress oflag=direct
 * For each Server
 
-  * Connect usb keyboard and mouse
-  * Connect monitor to console video output
+  * Connect usb keyboard, mouse and monitor
   * Insert the boot iso drive into a usb port
   * Power on the machine (or cycle if machine has been powered on)
   * Make sure machine is configured for UEFI boot
@@ -339,7 +346,7 @@ Software Initialization
 
 OSN DevOps
 ----------
-The site provisioning steps prepare the servers for remote configuration.
+The site provisioning steps described above, prepare the servers for remote configuration.
 The custom install image initializes networking and sets up the necessary
 administrator accounts, passwords and keys so that OSN DevOPs can remotely
 configure the storage cluster.
@@ -352,8 +359,8 @@ hosts. The installer configures just enough software and networking
 to allow OSN DevOPs to access the machines remotely and provision the rest 
 of the storage software.
 
-Overall Design
-""""""""""""""
+Installer Design
+""""""""""""""""
 The site-specific OSN installer consists of a "stock" Rocky 8
 installer with a custom kickstart that implements the following
 customizations:
@@ -362,34 +369,39 @@ customizations:
     disk monitoring tools.
   
   * Baseline networking packages: The software installs utilities needed 
-    to configure the JBOD and the iDRAC IP addresses.
+    to configure the JBOD and the iDRAC IP addresses. (TODO...)
 
   * Ansible provisioning user: The installer creates a privileged
-    user (osnadmin) and assigns initial credentials to the user. The 
+    user (osnadmin) and assigns initial credentials to the user. These 
     "bootstrap" credentials are changed as the first step of remote provisioning.
 
-  * OOB networking - The installer encodes information provided by the pod site
+  * OOB networking - The installer iso encodes information provided by the pod site
     (Service Tag and Networking information) to configure the OOB network connection. 
-    The installer inspects the serial number of the machine it is installing on and uses
-    that to choose the correct hostname and OOB IP settlings. This customization is unique 
-    to each site.
-
-The customized installer image is created using the script "minipodiso.sh"
+    During installation, the installer inspects the serial number of the machine it is 
+    installing on and uses that to choose the correct hostname and OOB IP settlings. 
+    This customization is unique to each site.
 
 ISO Builder
-""""""""""""
-The customized installer is built using a builder container located at
-docker.io/mghpcc/isobuilder. The builder container contains all the source
-materials and scripts needed to build the custom iso file. The container user
-runs the entrypoint script in the builder passing site IP 
-and serial number information and a root user password. The builder container
-then generates the customized iso file. A convenience script, buildiso.sh, is
-used to simplify the process of invoking the builder container with the appropriate
-environment variables and bind mounts set.
+"""""""""""
+The customized installer is built using a builder container via an image
+located at docker.io/mghpcc/isobuilder. The builder image has all the source
+assets and scripts needed to build the custom iso file. When the container is 
+run from the container image it expects:
 
+  * A bind mount at /data (within the container) for the output iso failed
+  * A bind mount at /tmp/inventory.yaml (withing the container) for the site inventory file
+  * An environment variable set in the container with the root password for the installed system
+
+When run with the above parameters, the container will generate a custom iso file named
+boot.iso in the output directory used in the /data bind mount.
+
+A convenience script, buildiso.sh, is provided to simplify the process of invoking the builder.
+This script, a docker file and other associated assets used to create the isobuilder image
+are located in the OSN github repository gen2-tools.
 
 DevOPs Preflight
 ^^^^^^^^^^^^^^^^
+
   * Confirm networking
     
     * SSH to each machine using the bootstrap private key
@@ -401,39 +413,73 @@ DevOPs Preflight
       * ens3f0/1 - 100G devices, Intel NIC
       * ens1f0np0, ens1f1np1 - 25G devices, Broadcom NIC
       * eno8303, eno8403 - 1G devices - LOM
+        * legacy naming is eno1, eno2
       * This could get cobbled due to wrong slot placement for the 
         25G and 100G nics or firmware changes (the Broadcom NICS changed
         names between driver updates)
 
-  * Create customized inventory file for the site and add it to AWX
+  * Confirm/Configure JBOD
 
-    * Create the inventory file in the gen2-ansible/inventory directory
-    * Commit and push the updated gen2-ansible repo to github
-    * Logon to the AWX server and synchronize the project to fetch the new
-      inventory file.
-    * Create a new inventory for the new site in AWX using the project as the
-    
-    * This will likely be done during the ticket processing
+    * SCP fwdownloader application to storcon0
+    * Logon to storcon0 
+    * Run 'sudo ./fwdownloader -d 0 -CLI ver'
+    * Note canister firmware version. If earlier than 5.2.0.137 (Oct 25, 2021) update
 
-  * Logon to the OSN AWX server and synchronize the project to fetch the new
-    inventory file.
+      * Update currently being done using UUT4.36_generic_cp_USMR2021.13.0_RC8_REL_redhat64
+      * Follow instructions in same folder as updater
 
-  * Create a new inventory for the new site in AWX using the project as the 
-  repository source.
+    * Run 'sudo ./fwdownloader -d 0 -CLI ver' again to confirm update
+    * Run 'sudo ./fwdownloader -d 0 -CLI set_zone_mode' to confirm current zone mode
+    * If zone mode is not 1
 
-  * On the ansible controller host run the following playbooks:
+      * Run 'sudo ./fwdownloader -d 0 -CLI set_zone_mode 1' to set zone mode to 1
+      * Run 'sudo ./fwdownloader -d 0 -CLI set_zone_mode' to confirm correct zone mode
+      * Reboot storcon0/1 for good measure to make sure udev naming does its thing
+
+    * Run 'ls /dev/disk/by-path | grep sas-exp | wc -l' on storcon0/1 and confirm that they each see 53 drives
+
+  * Update AWX with new site information
   
-    * Set the AWS credentials
+    * Logon to the OSN AWX server and synchronize the project to fetch the new
+      inventory file.
+    * Create customized inventory file for the site and add it to AWX
 
-      * export AWS_ACCESS_KEY_ID=<keyhere>
-      * export AWS_SECRET_ACCESS_KEY=<keyhere>
+      * This will likely be done during the ticket processing
+      * Create the inventory file in the gen2-ansible/inventory directory
+      * Commit and push the updated gen2-ansible repo to github
+      * Logon to the AWX server and synchronize the project to fetch the new
+        inventory file.
+      * Create a new inventory for the new site in AWX
+      * Edit the newly created inventory and select the "Sources" tab
+      * Create an inventory source:
 
-    * preflight - to install ceph and osn packages
-    * networking-  to setup the pod networks
+        * Choose AWX-CUSTOM for Execution environment
+        * Select "Sourced from a Project" as source
+        * Select "OSN Get2 Pod Project" from dropdown
+        * Enter the inventory file name as "inventories/hosts.<site>.yaml" (where site is your sitename)
+        * IMPORTANT: Hit CR to enter the file name - tabbing (confusingley) clears the text box and the dropdown is broken (does not correctly list inventory files)
+        * Hit "Save" button
+      
+      * Sync source by pressing the refresh icon at the end of the list or edit the inventory source and press the "Sync" button
 
-  * Reboot machines
+.. note::
+  The most recent JBOD received (3/20/23) came with updated firmware 
+  and was able to execute the array split command. Firmware
+  updating will likely not be needed on install in the future. 
 
-  * Validate intrapod connectivity
+  
+
+Replace Bootstrap Credentials
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  * Navigate to the "1 - Minipod Credentials" workflow job template and execute
+
+Configure Networking
+^^^^^^^^^^^^^^^^^^^^
+
+  * Navigate to the "2 - Minipod Networking" workflow job template and execute
+  * Note that this step will reboot the nodes
+  * When nodes come back, validate intrapod connectivity
 
     * Confirm ping from-to each host on the cluster network
     * Confirm gateway ping on each of the external networks
@@ -448,72 +494,20 @@ DevOPs Preflight
      * On the idrac issue ``set idrac.webserver.HostHeaderCheck 0``
      * **TODO** - can we set this via ipmi either in ansible or kickstart?
 
-Configure the JBOD
-^^^^^^^^^^^^^^^^^^
-  * Verify baseline == 106 disks - run lsscsi and count the disks
-  * Upload firmware update to storcon0
-
-    * 4.36 Firmware was the one tested with RHEL 8.5 and is the current version 
-      validated for minipod.
-    * Firmware package is: UUT4.36_generic_cp_USMR2021.13.0.RC8
-    * Package contains instructions for inband update
-
-  * Run inband controller update
-  * Use minicom to connect to the JBOD
-
-    * sudo minicom -s
-    * select serial port setup
-
-      * A - Serial Device - /dev/ttyS1
-      * E - Nps/Par/Bits - 115200 8N1
-      * F - HW Flow control - No
-      * G - SW Flow control - No
-
-  * Execute the GEM commands to split the chassis
-
-    * set_zone_mode 3
-
-      * HA2x2
-      * Ports 0/2 - Group A
-      * Ports 1/3 - Group B
-
-  * Reboot storcon0 and storcon1
-  * Verify that each controller sees 53 disks
-
-.. note::
-  The most recent JBOD received (3/20/23) came with updated firmware 
-  and was able to execute the array split command. Firmware
-  updating will likely not be needed on install in the future. 
-
 Bootstrap Storage Cluster
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  * Run the bootstrap playbook
+  * Navigate to the "3 - Minipod Bootstrap" workflow job template and execute
   * Logon to storcon0 and run "sudo cephadm ceph status"
   * Periodically run status to monitor the progress of the cluster build
 
-    * Your looking for "HEALTH_OK" and 106 osds, 106 up, 106 in
-    * Note that this can take up to an hour to complete. 
-
+    * You're looking for "HEALTH_OK" and 106 osds, 106 up, 106 in
+    * Note that this can take up to an hour to complete.
 
 Setup and Verify RGW
 ^^^^^^^^^^^^^^^^^^^^
 
-    * Run the rgw playbook
-
-      * Note that this step will create certs for the ingress service and
-        requires access to route53 to complete the ACME domain validation.
-        You need to make sure that the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
-        environment variables are set before running the rgw playbook.
-
-      * Safer to use short term credentials
-
-        * Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envars on local machine
-        * Execute: "aws sts get-session-token --duration-seconds=900"
-        * Use resulting credentials (these are limited to 15min 
-          but you can choose any duration) on provisioning machine.
-
-          * Note you need to set the additional envvar, AWS_SESSION_TOKEN
+  * Navigate to the "4 - Minipod RGW" workflow job template and execute
 
     * Verify rgw and ingress services are up (ceph orch ls)
     * Curl the external interface to make sure that they respond and have valid certs
@@ -529,32 +523,89 @@ Setup and Verify RGW
 
       * Portforward dashboard port (shown in grep above) from storcon0
 
-    * Use the dashboard to create a testbucket
-    * Get dashboard user credentials from users page
+    * Below will only work if bug is fixed that honors rgw_dns_name!!
 
-      * Select Object Gateway -> Users side-menu pick
-      * turn down knob on gateway user
-      * select keys tab
-      * select dashboard username
-      * click show button
+      * Use the dashboard to create a testbucket
+      * Get dashboard user credentials from users page
+
+        * Select Object Gateway -> Users side-menu pick
+        * turn down knob on gateway user
+        * select keys tab
+        * select dashboard username
+        * click show button
+
     * Add minipod config to rclone using dashboard user credentials
     * Verify object upload/download to/from the minipod using the rclone config
 
-DOC NOTES
-=========
 
-  * Need to write down process for stomping bootstrap root pwd and key
-  * Note that osnadmin *is* the default privileged user setup in kickstart
+Distribute Public Keys
+^^^^^^^^^^^^^^^^^^^^^^
+  
+    * Navigate to the "5 - Minipod Keys" workflow job template and execute
+    * Running this workflow distributes all the public keys stored in the prod/site/all
+      key. This includes the "site_public_key" item as well as all the keys listed in 
+      site_authorized_keys list. This process is a replace not an update operation; if
+      a key is not in the list or the site_public_key item, it will be removed from the
+      authorized_keys file on the pod.
 
-  * Proposal for ssh key Management
+        * Note that in addition to operator keys, the osn portal provisioning key
+          needs to be included here in the site_authorized_keys list.
 
-    * Store keys in AWS Secrets Manager
-    * Give OSN admins accounts in the mghpcc org (should we create another org?)
-    * Create secrets in mghpcc secrets thing
-    * Grant secret read access to osn admin people
+Let's Encrypt Job
+^^^^^^^^^^^^^^^^^
 
-    * Steps to run ansible
+The AWX template list contains a workflow called "Minipod Ingress Workflow". This 
+workflow checks and updates pod certificates. Schedule this workflow to run
+every week to ensure that the pod certificates are kept up to date.
 
-      * Using your IAM credentials run the token fetch scripty thing to fetch temporary creds
-      * Set envars with temporary creds returned 
-      * Go have fun provisioning things for things - whee!  
+  * Logon to AWX
+  * Select "Templates" from the left menu
+  * Select the "Minipod Ingress Workflow" workflow template from the list
+  * Select "Schedules" from the top menu
+  * Click the "Add Schedule" button
+  * Enter a name for the schedule in the resulting form
+  * Choose a start date and time for the schedule
+
+    * Note, we should try to stagger request days and times so that we don't trigger the LE rate limit.
+  * Click the "Repeat frequency" drop down and check "week" (this displays an extended form with more options)
+  * Enter "1" for the "Run Every" value
+  * Select a day of the week and check "Never" for the end date
+  * Click the "Prompt" button (this lets you set the responses to prompts that the workflow generates when run)
+  * In the "Inventory" section select the inventory corresponding to the pod and click "Next"
+  * In the "Other Prompts" sections, choose yaml format and add --- (i.e. empty yaml doc)
+  * Click "Next" to get to the prompts Preview page
+  * Click "Save" to save the runtime prompt responses
+  * Click "Save" on the resulting form to save the whole schedule
+
+  
+A Note About Secrets
+^^^^^^^^^^^^^^^^^^^^
+
+OSN secrets are stored as yaml in the AWS Secret Manager. Care must be taken
+when modifying the secrets to maintain valid yaml. The trickiest part is the 
+private key indentation. A convenience script "editsecret.sh" is provided to
+facilitate editing secrets. This script will fetch the secret from AWS, open
+the yaml in VIM and allow you to edit it as a normal file. Saving in the 
+editor will save the secret back to AWS. To use the script, your AWS credentials
+need to be available in the environment.
+
+There is one AWS secret containing a yaml document for each site and 
+an additional secret that contains information used by all sites. The 
+secret keys are named "hiearchically" with the form "prod/site/<sitename>"
+for the production pods. The key format anticipates other pod types (e.g. testing,
+staging). The prod/site/all secret contains information common to all pods.
+
+The information in the secrets is used by AWX to access the pods and to
+set secret/senitive values on the pods (e.g. keys and passwords). 
+
+An implementation detail worth noting is that a special AWX job template, "setup keys",
+is used to read secrets and set/change values in a pre-defined AWX machine credential (minipodcred). 
+This machine credential is referenced by all jobs that need to access pods. All OSN workflows
+include the "setup keys" job as the first step in the workflow which retrieves the keys from 
+AWS (the specific site/key to use is in the inventory file) and sets the values in the minipodcred
+machine credential. Subsequent steps in the workflow that reference the minipodcred credential
+then have the correct credential values needed to access the hosts in the workflow inventory.
+
+In the future, we may decide to make AWX the source of credential truth and
+avoid the need for the special job template. This will need to wait for a more
+hardened AWX deployment and a validation of the security of the AWX secrets.
