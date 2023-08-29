@@ -68,42 +68,6 @@ MGHPCC Test System
       | G: 192.69.103.241
       | M: 255.255.255.240
 
-URI-mghpcc-staging
-^^^^^^^^^^^^^^^^^^
-Dashboard Password: crabtreeforu
-
-.. list-table::
-  :header-rows: 1
-
-  * - Hostname
-    - Service Tag
-    - OOB
-    - Access
-  * - storcon0
-    - 5GSJRT3
-    - | A: 192.69.102.75
-      | G: 192.69.102.1
-      | M: 255.255.255.0
-    - | A: 192.69.102.78
-      | G: 192.69.102.1
-      | M: 255.255.255.0
-  * - storcon1
-    - 4GSJRT3
-    - | A: 192.69.102.76
-      | G: 192.69.102.1
-      | M: 255.255.255.0
-    - | A: 192.69.102.79 [1]_
-      | G: 192.69.102.1
-      | M: 255.255.255.0
-  * - mon0
-    - 956Z1V3
-    - | A: 192.69.102.77
-      | G: 192.69.102.1
-      | M: 255.255.255.0
-    - | A: 192.69.102.80
-      | G: 192.69.102.1
-      | M: 255.255.255.0
-
 URI
 ^^^^^^^^^^
 Dashboard Password: crabtreeforu
