@@ -165,7 +165,7 @@ to the JBOD. All three servers run the the manager, monitor and rados gateway se
 External access is mediated by the ingress service which runs on storcon0 and mon0
 (these are the machines with high-speed external access). Load is spread across the three servers
 by the ingress service via HAProxy. The ingress provides HA IP via keepalived/vrrp. The 
-RGW HA implemenation is described in the `RGW Service Documentation`_.
+RGW HA implementation is described in the `RGW Service Documentation`_.
 
 .. _RGW Service Documentation: https://docs.ceph.com/en/latest/cephadm/services/rgw/
 
@@ -272,14 +272,16 @@ Site Administrator Preflight
 
   * 3x1G Copper access ports
   * 3x routed public IPs (specify IP address, gateway and netmask)
-  * Outbound rules: http, https
+  * Outbound rules: tpc/http, tcp/https, tcp/dns, udp/ntp
+    * Note, dns and ntp can be configured for internal resources
   * Inbound rules: ssh 
 
-    * Can be source limited to OSN controller nodes
+    * Can be source limited to OSN controller and monitoring nodes
       
       * ctl01.osn.mghpcc.org - 192.69.102.38
       * ctl02.osn.mghpcc.org - 192.69.102.51
       * ctl03.osn.mghpcc.org - 192.69.102.54
+      * SDSC Nagios Server - 132.249.237.11
   * Verify using a test endpoint machine that connections work
 * Provision Pod Access Networking
 
@@ -288,11 +290,12 @@ Site Administrator Preflight
     * Note that transceivers are specified in the cable kit BOM
       so all that is required from site IT is the provisioning of a 
       QSFP28 switchport
+    * Jumboframes: Determine remote site MTU. Ping test.
   * 3x routed public IPs
 
     * One for each ingress host and a third for the VIP
-  * Outbound rules: http, https
-  * Inbound rules: http, https
+  * Outbound rules: tcp/http, tcp/https
+  * Inbound rules: tcp/http, tcp/https
   * Verify with test endpoint machine that connections work
 * Submit Ticket for Custom Boot ISO (help@osn.mghpcc.org)
 
@@ -302,6 +305,7 @@ Site Administrator Preflight
     * Service Tag
     * OOB IP Address, Gateway and Netmask
     * Access IP Address, Gateway and Netmask (only for mon0 and storcon0)
+    * Access network MTU
 
 .. note::
   All three machines are identical so which machine you 
@@ -388,7 +392,7 @@ located at docker.io/mghpcc/isobuilder. The builder image has all the source
 assets and scripts needed to build the custom iso file. When the container is 
 run from the container image it expects:
 
-  * A bind mount at /data (within the container) for the output iso failed
+  * A bind mount at /data (within the container) for the output iso file
   * A bind mount at /tmp/inventory.yaml (withing the container) for the site inventory file
   * An environment variable set in the container with the root password for the installed system
 
@@ -446,6 +450,8 @@ DevOPs Preflight
 
       * This will likely be done during the ticket processing
       * Create the inventory file in the gen2-ansible/inventory directory
+        * If necessary, override "all" group defaults by creating a site group folder
+          and creating an overrides file there with the name <<site>>_group_vars_overrides.yaml
       * Commit and push the updated gen2-ansible repo to github
       * Logon to the AWX server and synchronize the project to fetch the new
         inventory file.
@@ -474,8 +480,8 @@ Replace Bootstrap Credentials
 
   * Navigate to the "1 - Minipod Credentials" workflow job template and execute
 
-Configure Networking
-^^^^^^^^^^^^^^^^^^^^
+Configure Host
+^^^^^^^^^^^^^^
 
   * Navigate to the "2 - Minipod Host Provisioning Workflow" workflow job template and execute
   * Note that this step will reboot the nodes
@@ -507,7 +513,7 @@ Bootstrap Storage Cluster
 Setup and Verify RGW
 ^^^^^^^^^^^^^^^^^^^^
 
-  * Navigate to the "4 - Minipod RGW" workflow job template and execute
+  * Navigate to the "4- Minipod Install RGW Workflow" workflow job template and execute
 
     * Verify rgw and ingress services are up (ceph orch ls)
     * Curl the external interface to make sure that they respond and have valid certs
@@ -538,8 +544,8 @@ Setup and Verify RGW
     * Verify object upload/download to/from the minipod using the rclone config
 
 
-Distribute Public Keys
-^^^^^^^^^^^^^^^^^^^^^^
+Configure Accounts and Credentials
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
     * Navigate to the "5 - Minipod Keys" workflow job template and execute
     * Running this workflow distributes all the public keys stored in the prod/site/all
@@ -550,6 +556,8 @@ Distribute Public Keys
 
         * Note that in addition to operator keys, the osn portal provisioning key
           needs to be included here in the site_authorized_keys list.
+
+    * This workflow also creates the nagios account used for monitoring
 
 Let's Encrypt Job
 ^^^^^^^^^^^^^^^^^
