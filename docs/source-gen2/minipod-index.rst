@@ -477,7 +477,7 @@ Replace Bootstrap Credentials
 Configure Networking
 ^^^^^^^^^^^^^^^^^^^^
 
-  * Navigate to the "2 - Minipod Networking" workflow job template and execute
+  * Navigate to the "2 - Minipod Host Provisioning Workflow" workflow job template and execute
   * Note that this step will reboot the nodes
   * When nodes come back, validate intrapod connectivity
 
@@ -497,7 +497,7 @@ Configure Networking
 Bootstrap Storage Cluster
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  * Navigate to the "3 - Minipod Bootstrap" workflow job template and execute
+  * Navigate to the "3 - Minipod Install Ceph" workflow job template and execute
   * Logon to storcon0 and run "sudo cephadm ceph status"
   * Periodically run status to monitor the progress of the cluster build
 
