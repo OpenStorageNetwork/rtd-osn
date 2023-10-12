@@ -19,7 +19,7 @@ simulations, and perform statistical analysis of live data.
 
 .. note::
 
-   This documentation is under active development.
+   This documentation is under development.
 
 Contents
 --------
