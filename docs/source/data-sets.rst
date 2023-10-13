@@ -37,10 +37,9 @@ In the image below, culbertj@mit.edu and jtgoodhue@mghpcc.org have access to all
 project because they are both data managers for the project "JIMTEST", dsimmel@psc.edu will only
 have access to the two keys shown with the "visible" checkbox checked.
 
+.. .. figure:: images/osn-data-management.png
+..   :width: 600
+..   :align: center
+..   :alt: Data Management Example
 
-.. figure:: images/osn-data-management.png
-  :width: 600
-  :align: center
-  :alt: Data Management Example
-
-  Data Management Example
+..   Data Management Example
