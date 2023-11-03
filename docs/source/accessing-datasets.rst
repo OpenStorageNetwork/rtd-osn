@@ -300,7 +300,7 @@ Where:
 * <alias> – nickname of your choice for the allocation
 * <access key> – the access key from the data manager or from the portal
 * <secret key> – the secret key from the data manager of the portal
-* <location> – the location information provided by the data manager or portal
+* <location> – the URL provided by the data manager or portal without the bucket 
 
 An example of a configuration stanza might look like: ::
 
