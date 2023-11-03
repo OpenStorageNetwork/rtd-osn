@@ -18,7 +18,7 @@ To use your own machine for this exercise, you will need git, wget, and gnuplot.
 
 
 Pull down the workflow from GitHub: 
-""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
 ::
 
 	$ git clone https://github.com/mghpcsim/osn-tutorial.git
@@ -28,7 +28,7 @@ Pull down the workflow from GitHub:
    If you are using the above binder, the Git repo has already been cloned
 
 Change directories to the exercise directory:
-""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""
 
 ::
 
@@ -36,7 +36,7 @@ Change directories to the exercise directory:
 
 
 Workflow step 0, download data from OSN:
-"""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""
 
 ::
 
@@ -70,7 +70,7 @@ Execute the download data script:
 
 
 Workflow step 1, process the data:
-""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""
 
 ::
 
@@ -103,7 +103,7 @@ Run the process data script:
 
 
 Workflow step 2, visualize the results:
-""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""
 
 ::
 
