@@ -19,4 +19,5 @@ Contents
    recovery
    smartctl
    email-list
-
+   ssh-access
+   readonly-keys 
