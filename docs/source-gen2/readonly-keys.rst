@@ -30,6 +30,8 @@ OSN Bucket Read-only Keys
   aws s3api get-bucket-policy --profile <<site>> --bucket <<bucketname>> | jq '.Policy | fromjson' > <<bucketname>>-orig.json
   cp <<bucketname>>-orig.json <<bucketname>>-readonly.json
 
+* Remove the anon read policy stanza if one exists (will have a principal "AWS": ["*"])
+
 * Add the following stanza to the <<bucketname>>-readonly.json policy file
 
 ::
