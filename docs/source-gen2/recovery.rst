@@ -51,3 +51,38 @@ Replacement of Storcon1
 Differs because we need to bring up the temp link
 to regain monitor quorum
 
+Replacement of Disk
+-------------------
+RMAs are through Seagate.
+
+
+Visit the `Seagate Warranty and Replacement website <https://www.seagate.com/support/warranty-and-replacements/>`_ 
+and create an account so you will be able to RMA the disks.
+
+Accounts must be created with a personal email, they don't allow admin groups.
+
+
+Two things that were not immediately obvious:
+
+#. On the customer returns page, the tab used to create the RMA is called "Create Order"
+
+#. There is only one line on the RMA page to enter model + serial, below that line there is an easy-to-miss link named "add more products" clicking that allows you to add more than one drive to the RMA.
+
+The serial nuymber to enter is likely the first 8 digits given by smartctl, i.e.  ZA1F0TKV0000C9366HQD is ZA1F0TKV
+
+When offered, the free option is fine to use (we don't need advanced
+replacement).
+
+Once the RMA is created and you have shipping info and RMA number Kevin or Brendan can help you getting it shipped from MGHPCC.
+
+
+MGHPCC handles shipping
+
+Address to ship to:
+
+| Seagate RMA United States CSO Service Center
+| Seagate Technology c/o Agility Logistics
+| 21906 Arnold Center Road
+| Carson, CA 90810 United States
+
+They should provide a pdf with address and rma number already on it
