@@ -234,4 +234,40 @@ American Museum of Natural History
       | G: 216.73.255.65
       | M: 255.255.255.192
 
+
+RICE
+^^^^^^^^^
+
+.. list-table::
+  :header-rows: 1
+
+  * - Hostname
+    - Service Tag
+    - OOB
+    - Access
+  * - storcon0
+    - CJHFPZ3
+    - | A: 128.42.60.200
+      | G: 128.42.60.1
+      | M: 255.255.255.0
+    - | A: 192.136.153.200
+      | G: 192.136.153.1
+      | M: 255.255.255.0
+  * - storcon1
+    - DJHFPZ3
+    - | A: 128.42.60.201
+      | G: 128.42.60.1
+      | M: 255.255.255.0
+    - | A: 192.136.153.201 [1]_
+      | G: 192.136.153.1
+      | M: 255.255.255.0
+  * - mon0
+    - FJHFPZ3
+    - | A: 128.42.60.202
+      | G: 128.42.60.1
+      | M: 255.255.255.0
+    - | A: 192.136.153.202
+      | G: 192.136.153.1
+      | M: 255.255.255.0
+
 .. [1] This is a floating IP (Ingress IP) shared between mon0 and storcon0, it is not actually assigned to storcon1
