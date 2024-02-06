@@ -385,15 +385,9 @@ Both packages have detailed descriptions on how to connect the service with a S3
 Globus with OSN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-OSN does not provide a Globus instance. You must provide your own.
-
-In order to use Globus with OSN, you must have the `AWS Web Services S3 Connector <https://docs.globus.org/premium-storage-connectors/v5/aws-s3/>`__ installed and configured in your Globus instance.
+OSN does not provide a Globus instance. You must provide your own. In order to use Globus with OSN, you must have the `AWS Web Services S3 Connector <https://docs.globus.org/premium-storage-connectors/v5/aws-s3/>`__ installed and configured in your Globus instance.
 
 After installing the Globus Connector, you can run the following commands to configure your OSN bucket as a Globus collection.
-
-::
-
-   [yourprofilename]
 
 
 Create a storage gateway: 
