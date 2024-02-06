@@ -403,3 +403,5 @@ Find the Storage Gateway ID:
 Create a Globus collection:
 ::
 	globus-connect-server collection create 12345678-9abc-defg-hijk-lmnopqrstuvw / "collection_name" --organization "Name of your Organization" --contact-email youremail@your.domain
+
+where the string 12345678-9abc-defg-hijk-lmnopqrstuvw is what is returned by the "Find the Storage Gateway ID" command.
