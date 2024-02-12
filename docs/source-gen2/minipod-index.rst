@@ -450,6 +450,7 @@ DevOPs Preflight
 
       * This will likely be done during the ticket processing
       * Create the inventory file in the gen2-ansible/inventory directory
+
         * If necessary, override "all" group defaults by creating a site group folder
           and creating an overrides file there with the name <<site>>_group_vars_overrides.yaml
       * Commit and push the updated gen2-ansible repo to github

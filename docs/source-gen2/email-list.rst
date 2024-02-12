@@ -18,7 +18,7 @@ Once that happens, you access it via SSH: ::
 	transport_maps = hash:/etc/postfix/transport
 	virtual_alias_maps = hash:/etc/postfix/virtual
 
-After updating one of the *_maps files, run `postmap <map_file>` then
+After updating one of the \*_maps files, run `postmap <map_file>` then
 restart postfix. Finally, check in the updated text files to SVN.
 
 For example, to add an email alias, do: ::
