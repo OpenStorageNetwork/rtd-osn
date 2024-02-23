@@ -395,16 +395,18 @@ Create a storage gateway:
 
 ::
 
-	globus-connect-server storage-gateway create s3 collection_name --s3-endpoint https://site.osn.xsede.org --bucket bucket-name --s3-user-credential --domain your.globus.domain
+$ globus-connect-server storage-gateway create s3 collection_name --s3-endpoint https://site.osn.xsede.org --bucket bucket-name --s3-user-credential --domain your.globus.domain
 
 Find the Storage Gateway ID:
 
 ::
-	globus-connect-server storage-gateway list
+
+$ globus-connect-server storage-gateway list
 
 Create a Globus collection:
 
 ::
-	globus-connect-server collection create 12345678-9abc-defg-hijk-lmnopqrstuvw / "collection_name" --organization "Name of your Organization" --contact-email youremail@your.domain
+
+$ globus-connect-server collection create 12345678-9abc-defg-hijk-lmnopqrstuvw / "collection_name" --organization "Name of your Organization" --contact-email youremail@your.domain
 
 where the string 12345678-9abc-defg-hijk-lmnopqrstuvw is what is returned by the "Find the Storage Gateway ID" command.
