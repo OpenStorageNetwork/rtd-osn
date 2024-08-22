@@ -396,4 +396,40 @@ Calfornia Institute of Technology
       | G: 68.181.14.177
       | M: 255.255.255.240
 
+
+University of Minnesota
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+  :header-rows: 1
+
+  * - Hostname
+    - Service Tag
+    - OOB
+    - Access
+  * - storcon0
+    - H9QVM34
+    - | A: 128.101.146.122
+      | G: 128.101.146.126
+      | M: 255.255.255.248
+    - | A: 134.84.33.74
+      | G: 134.84.33.78
+      | M: 255.255.255.248
+  * - storcon1
+    - G9QVM34
+    - | A: 128.101.146.123
+      | G: 128.101.146.126
+      | M: 255.255.255.248
+    - | A: 134.84.33.75 [1]_
+      | G: 134.84.33.78
+      | M: 255.255.255.248
+  * - mon0
+    - F9QVM34
+    - | A: 128.101.146.121
+      | G: 128.101.146.126
+      | M: 255.255.255.248
+    - | A: 134.84.33.73
+      | G: 134.84.33.78
+      | M: 255.255.255.248
+
 .. [1] This is a floating IP (Ingress IP) shared between mon0 and storcon0, it is not actually assigned to storcon1
