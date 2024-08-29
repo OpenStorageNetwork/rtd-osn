@@ -432,4 +432,39 @@ University of Minnesota
       | G: 134.84.33.78
       | M: 255.255.255.248
 
+NYU-P1
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+  :header-rows: 1
+
+  * - Hostname
+    - Service Tag
+    - OOB
+    - Access
+  * - storcon0
+    - 56GZ624
+    - | A: 192.69.102.62
+      | G: 192.69.102.1
+      | M: 255.255.255.0
+    - | A: 192.69.103.234
+      | G: 192.69.103.225
+      | M: 255.255.255.240
+  * - storcon1
+    - 46GZ624
+    - | A: 192.69.102.63
+      | G: 192.69.102.1
+      | M: 255.255.255.0
+    - | A: 192.69.103.235 [1]_
+      | G: 192.69.103.225
+      | M: 255.255.255.240
+  * - mon0
+    - 36GZ624
+    - | A: 192.69.102.64
+      | G: 192.69.102.1
+      | M: 255.255.255.0
+    - | A: 192.69.103.234
+      | G: 192.69.103.225
+      | M: 255.255.255.240
+
 .. [1] This is a floating IP (Ingress IP) shared between mon0 and storcon0, it is not actually assigned to storcon1
