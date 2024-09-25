@@ -468,3 +468,40 @@ NYU-P1
       | M: 255.255.255.240
 
 .. [1] This is a floating IP (Ingress IP) shared between mon0 and storcon0, it is not actually assigned to storcon1
+
+University of Massachusetts Amherst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+  :header-rows: 1
+
+  * - Hostname
+    - Service Tag
+    - OOB
+    - Access
+  * - storcon0
+    - HCCMF24
+    - | A: 205.172.168.2
+      | G: 205.172.168.1
+      | M: 255.255.255.192
+    - | A: 205.172.168.8
+      | G: 205.172.168.1
+      | M: 255.255.255.192
+  * - storcon1
+    - JCCMF24
+    - | A: 205.172.168.3
+      | G: 205.172.168.1
+      | M: 255.255.255.192
+    - | A: 205.172.168.9 [1]_ 
+      | G: 205.172.168.1
+      | M: 255.255.255.192
+  * - mon0
+    - 1DCMF24
+    - | A: 205.172.168.4
+      | G: 205.172.168.1
+      | M: 255.255.255.192
+    - | A: 205.172.168.10
+      | G: 205.172.168.1
+      | M: 255.255.255.192
+
+.. [1] This is a floating IP (Ingress IP) shared between mon0 and storcon0, it is not actually assigned to storcon1
