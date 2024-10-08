@@ -472,7 +472,10 @@ UMass
 
 .. list-table::
   :header-rows: 1
-
+  * - **UMA1**
+    -
+    -
+    -
   * - Hostname
     - Service Tag
     - OOB
