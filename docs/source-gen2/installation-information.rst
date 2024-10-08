@@ -473,14 +473,11 @@ UMass
 
 .. list-table::
   :header-rows: 1
+
   * - Hostname
     - Service Tag
     - OOB
     - Access
-  * - **UMA1**
-    -
-    -
-    -
   * - storcon0
     - HCCMF24
     - | A: 205.172.168.242
