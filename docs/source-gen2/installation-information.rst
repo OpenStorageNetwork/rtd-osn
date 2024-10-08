@@ -470,17 +470,18 @@ NYU-P1
 UMass
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+
 .. list-table::
   :header-rows: 1
-  * - **UMA1**
-    -
-    -
-    -
   * - Hostname
     - Service Tag
     - OOB
     - Access
   * - storcon0
+  * - **UMA1**
+    -
+    -
+    -
     - HCCMF24
     - | A: 205.172.168.242
       | G: 205.172.168.241
