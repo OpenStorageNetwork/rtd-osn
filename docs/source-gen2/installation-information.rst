@@ -432,7 +432,7 @@ University of Minnesota
       | G: 134.84.33.78
       | M: 255.255.255.248
 
-NYU-P1
+NYU
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 .. list-table::
@@ -442,6 +442,10 @@ NYU-P1
     - Service Tag
     - OOB
     - Access
+  * - **NYU1**
+    -
+    -
+    -
   * - storcon0
     - 56GZ624
     - | A: 192.69.102.62
