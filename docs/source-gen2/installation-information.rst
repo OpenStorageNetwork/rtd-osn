@@ -114,7 +114,7 @@ USGS/WHOI
     - Service Tag
     - OOB
     - Access
-  * - **USGS**
+  * - **usgs**
     -
     -
     -
@@ -142,7 +142,7 @@ USGS/WHOI
     - | A: 192.69.103.230
       | G: 192.69.103.225
       | M: 255.255.255.240
-  * - **USGS2**
+  * - **usgs2**
     -
     -
     -
@@ -181,7 +181,7 @@ American Museum of Natural History
     - Service Tag
     - OOB
     - Access
-  * - **AMNH-P1**
+  * - **amnh1**
     -
     -
     -
@@ -209,7 +209,7 @@ American Museum of Natural History
     - | A: 216.73.255.116
       | G: 216.73.255.65
       | M: 255.255.255.192
-  * - **AMNH-P2**
+  * - **amnh2**
     -
     -
     -
@@ -237,7 +237,7 @@ American Museum of Natural History
     - | A: 216.73.255.119
       | G: 216.73.255.65
       | M: 255.255.255.192
-  * - **AMNH-P3**
+  * - **amnh3**
     -
     -
     -
@@ -277,6 +277,10 @@ RICE
     - Service Tag
     - OOB
     - Access
+ * - **rice1**
+    -
+    -
+    -
   * - storcon0
     - CJHFPZ3
     - | A: 128.42.60.200
@@ -311,7 +315,7 @@ Calfornia Institute of Technology
     - Service Tag
     - OOB
     - Access
-  * - **CALTECH-P1**
+  * - **caltech1**
     -
     -
     -
@@ -339,7 +343,7 @@ Calfornia Institute of Technology
     - | A: 68.181.14.180
       | G: 68.181.14.177
       | M: 255.255.255.240
-  * - **CALTECH-P2**
+  * - **caltech2**
     -
     -
     -
@@ -367,7 +371,7 @@ Calfornia Institute of Technology
     - | A: 68.181.14.183
       | G: 68.181.14.177
       | M: 255.255.255.240
-  * - **CALTECH-P3**
+  * - **caltech3**
     -
     -
     -
@@ -407,6 +411,10 @@ University of Minnesota
     - Service Tag
     - OOB
     - Access
+ * - **umn1**
+    -
+    -
+    -
   * - storcon0
     - H9QVM34
     - | A: 128.101.146.122
@@ -442,7 +450,7 @@ NYU
     - Service Tag
     - OOB
     - Access
-  * - **NYU1**
+  * - **nyu1**
     -
     -
     -
@@ -482,7 +490,7 @@ UMass
     - Service Tag
     - OOB
     - Access
-  * - **UMA1**
+  * - **uma1**
     -
     -
     -
