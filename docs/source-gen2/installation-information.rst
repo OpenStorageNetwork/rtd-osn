@@ -478,6 +478,10 @@ UMass
     - Service Tag
     - OOB
     - Access
+  * - **UMA1**
+    -
+    -
+    -
   * - storcon0
     - HCCMF24
     - | A: 205.172.168.242
