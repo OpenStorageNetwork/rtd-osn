@@ -43,6 +43,10 @@ MGHPCC Test System
     - Service Tag
     - OOB
     - Access
+  * - **mghpcc1**
+    -
+    -
+    -
   * - storcon0
     - 5Q08RT3
     - | A: 192.69.102.71
@@ -79,6 +83,10 @@ Dashboard Password: crabtreeforu
     - Service Tag
     - OOB
     - Access
+  * - **uri**
+    -
+    -
+    -
   * - storcon0
     - 5GSJRT3
     - | A: 131.109.14.162
