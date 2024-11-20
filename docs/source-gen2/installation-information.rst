@@ -527,4 +527,44 @@ UMass
       | G: 205.172.168.1
       | M: 255.255.255.192
 
+University of Delaware
+^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. list-table::
+  :header-rows: 1
+
+  * - Hostname
+    - Service Tag
+    - OOB
+    - Access
+  * - **udel1**
+    -
+    -
+    -
+  * - storcon0
+    - 7JPD724
+    - | A: 128.175.132.37
+      | G: 128.175.132.33
+      | M: 255.255.255.224
+    - | A: 128.175.132.34
+      | G: 128.175.132.33
+      | M: 255.255.255.224
+  * - storcon1
+    - 9JPD724
+    - | A: 128.175.132.38
+      | G: 128.175.132.33
+      | M: 255.255.255.224
+    - | A: 128.175.132.35 [1]_
+      | G: 128.175.132.33
+      | M: 255.255.255.224
+  * - mon0
+    - 8JPD724
+    - | A: 128.175.132.39
+      | G: 128.175.132.33
+      | M: 255.255.255.224
+    - | A: 128.175.132.36
+      | G: 128.175.132.33
+      | M: 255.255.255.224
+
 .. [1] This is a floating IP (Ingress IP) shared between mon0 and storcon0, it is not actually assigned to storcon1
