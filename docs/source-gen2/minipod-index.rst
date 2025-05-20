@@ -272,7 +272,7 @@ Site Administrator Preflight
 
   * 3x1G Copper access ports
   * 3x routed public IPs (specify IP address, gateway and netmask)
-  * Outbound rules: tpc/http, tcp/https, tcp/dns, udp/ntp
+  * Outbound rules: tpc/http, tcp/https, tcp/dns, udp/ntp, ICMP
     * Note, dns and ntp can be configured for internal resources
   * Inbound rules: ssh 
 
@@ -294,7 +294,7 @@ Site Administrator Preflight
   * 3x routed public IPs
 
     * One for each ingress host and a third for the VIP
-  * Outbound rules: tcp/http, tcp/https
+  * Outbound rules: tcp/http, tcp/https, tcp/dns, udp/ntp, ICMP
   * Inbound rules: tcp/http, tcp/https
   * Verify with test endpoint machine that connections work
 * Submit Ticket for Custom Boot ISO (help@osn.mghpcc.org)
